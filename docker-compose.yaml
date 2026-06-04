@@ -84,6 +84,13 @@ services:
       PGADMIN_DEFAULT_PASSWORD: postgresadmin
     container_name: postgres-admin
 
+  # mock-service
+  http-mock:
+    <<: *python-service
+    ports: [ "8003:8003" ]
+    command: "tests.mock.http.server"
+    container_name: "http-mock"
+
   postgres-migrator-operations:
     <<: *base-service
     command: [ "alembic", "-c", "services/operations/alembic.ini", "upgrade", "head" ]
