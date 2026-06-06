@@ -91,6 +91,12 @@ services:
     command: "tests.mock.http.server"
     container_name: "http-mock"
 
+  grpc-mock:
+    <<: *python-service
+    ports: [ "9003:9003" ]
+    command: "tests.mock.grpc.server"
+    container_name: "grpc-mock"
+
   postgres-migrator-operations:
     <<: *base-service
     command: [ "alembic", "-c", "services/operations/alembic.ini", "upgrade", "head" ]
