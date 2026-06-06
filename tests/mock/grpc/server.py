@@ -4,6 +4,7 @@ from concurrent import futures
 import grpc
 from grpc_reflection.v1alpha import reflection
 
+from contracts.services.accounts import accounts_service_pb2
 from contracts.services.cards import cards_service_pb2, cards_service_pb2_grpc
 from contracts.services.users import users_service_pb2, users_service_pb2_grpc
 from tests.config import test_settings
@@ -28,6 +29,7 @@ async def serve():
     # Здесь нет сценарной логики: сервер лишь собирает компоненты вместе.
     users_service_pb2_grpc.add_UsersServiceServicer_to_server(UsersMockService(), server)
     cards_service_pb2_grpc.add_CardsServiceServicer_to_server(CardsMockService(), server)
+    cards_service_pb2_grpc.add_AccountsServiceServicer_to_server(CardsMockService(), server)
 
     # Reflection нужен для инструментария (например, Postman/grpcurl)
     # и для удобной отладки на учебном стенде.
@@ -39,6 +41,7 @@ async def serve():
             reflection.SERVICE_NAME,
             users_service_pb2.DESCRIPTOR.services_by_name['UsersService'].full_name,
             cards_service_pb2.DESCRIPTOR.services_by_name['CardsService'].full_name,
+            accounts_service_pb2.DESCRIPTOR.services_by_name['AccountsService'].full_name,
         ),
         server
     )
